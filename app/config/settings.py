@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     # Mailtrap email config
     EMAIL_HOST: str = Field("smtp.gmail.com", json_schema_extra={"env": "EMAIL_HOST"})
     EMAIL_PORT: int = Field(587, json_schema_extra={"env": "EMAIL_PORT"})
-    EMAIL_HOST_USERNAME: str = Field(..., json_schema_extra={"env": "EMAIL_HOST_USERNAME"})
+    EMAIL_HOST_USER: str = Field(..., json_schema_extra={"env": "EMAIL_HOST_USER"})
     EMAIL_HOST_PASSWORD: str = Field(..., json_schema_extra={"env": "EMAIL_HOST_PASSWORD"})
     EMAIL_USE_TLS: bool = Field(True, json_schema_extra={"env": "EMAIL_USE_TLS"})
     FROM_EMAIL: str = Field(..., json_schema_extra={"env": "FROM_EMAIL"})
