@@ -17,10 +17,11 @@ class Settings(BaseSettings):
     FERNET_KEY: str = Field(..., alias="FERNET_KEY")
 
     # Mailtrap email config
-    MAILTRAP_HOST: str = Field("sandbox.smtp.mailtrap.io", json_schema_extra={"env": "MAILTRAP_HOST"})
-    MAILTRAP_PORT: int = Field(587, json_schema_extra={"env": "MAILTRAP_PORT"})
-    MAILTRAP_USERNAME: str = Field(..., json_schema_extra={"env": "MAILTRAP_USERNAME"})
-    MAILTRAP_PASSWORD: str = Field(..., json_schema_extra={"env": "MAILTRAP_PASSWORD"})
+    EMAIL_HOST: str = Field("smtp.gmail.com", json_schema_extra={"env": "EMAIL_HOST"})
+    EMAIL_PORT: int = Field(587, json_schema_extra={"env": "EMAIL_PORT"})
+    EMAIL_HOST_USERNAME: str = Field(..., json_schema_extra={"env": "EMAIL_HOST_USERNAME"})
+    EMAIL_HOST_PASSWORD: str = Field(..., json_schema_extra={"env": "EMAIL_HOST_PASSWORD"})
+    EMAIL_USE_TLS: bool = Field(True, json_schema_extra={"env": "EMAIL_USE_TLS"})
     FROM_EMAIL: str = Field(..., json_schema_extra={"env": "FROM_EMAIL"})
     GROQ_API_KEY: str = Field(..., json_schema_extra={"env": "GROQ_API_KEY"})
 
