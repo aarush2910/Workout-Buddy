@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 import re
 import json
 from app.schemas.workout_progress import WorkoutProgressAPIResponse
-from app.utils.groq import get_groq_response
+from app.utils.gemini import generate_gemini_response
 from starlette.concurrency import run_in_threadpool
 
 router = APIRouter()
@@ -128,7 +128,7 @@ Return only a valid JSON object in the following exact format:
 """
 
     try:
-        ai_result = await run_in_threadpool(get_groq_response, prompt)
+        ai_result = await run_in_threadpool(generate_gemini_response, prompt)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"AI request failed: {str(e)}")
 

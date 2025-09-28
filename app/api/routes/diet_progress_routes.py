@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Query, HTTPException
 from app.core.auth import get_current_user_id
 from app.utils.api_response import api_response
-from app.utils.groq import get_groq_response
+from app.utils.gemini import generate_gemini_response
 from app.db.mongodb import db
 from bson import ObjectId
 from datetime import datetime
@@ -53,7 +53,7 @@ async def generate_ai_progress(
 
     weight = profile["weight"]
 
-    # Prompt for Groq AI
+    # Prompt for Gemini AI
     prompt = f"""
 You are a certified AI dietitian.
 
@@ -146,7 +146,7 @@ ONLY return this JSON object. NOTHING else.
 """
 
     try:
-        ai_result = await run_in_threadpool(get_groq_response, prompt)
+        ai_result = await run_in_threadpool(generate_gemini_response, prompt)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"AI request failed: {str(e)}")
 
