@@ -16,7 +16,7 @@ async def configure_gemini_model():
 
     try:
         genai.configure(api_key=api_key)
-        model = genai.GenerativeModel(model_name="gemini-1.5-flash-latest")
+        model = genai.GenerativeModel(model_name="gemini-1.5")
         print("✅ Gemini Flash model initialized successfully")
     except Exception as e:
         print(f"❌ Error configuring Gemini: {e}")
