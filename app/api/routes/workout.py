@@ -75,7 +75,7 @@ async def create_weekly_workout_plan(
         await workout_collection.delete_many({"user_id": user_id})
 
 
-        raw_response = generate_gemini_response(build_workout_prompt(payload))
+        raw_response = await generate_gemini_response(build_workout_prompt(payload))
         cleaned_response = re.sub(r"^```(?:json)?\n|\n```$", "", raw_response.strip())
 
         # 🔍 Check for empty or invalid response
