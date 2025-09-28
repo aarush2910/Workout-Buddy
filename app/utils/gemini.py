@@ -8,10 +8,10 @@ async def configure_gemini_model():
     Initializes Gemini Flash using API key from environment variable.
     """
     global model
-    api_key = os.getenv("GEMINI_API_KEY")  # <-- make sure this is set in your .env
+    api_key = os.getenv("GEMINI_API")  # <-- make sure this is set in your .env
 
     if not api_key:
-        print("❌ GEMINI_API_KEY not found in environment variables!")
+        print("❌ GEMINI_API not found in environment variables!")
         return
 
     try:
