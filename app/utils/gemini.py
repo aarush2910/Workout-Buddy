@@ -1,52 +1,71 @@
+# app/utils/gemini.py
+
 import google.generativeai as genai  # type: ignore
 import asyncio
+from typing import Dict, Any
 from app.api.routes.api_key import get_api_key
 
 # Global variable to store the configured Gemini model
 model = None
 
+
 async def configure_gemini_model():
     """
-    Configures the Gemini API and initializes the model.
-    This function should be called once during application startup.
+    Initializes the Gemini AI model.
+    Must be called on application startup.
     """
     global model
     try:
+        # Fetch API key (adjust get_api_key() according to your implementation)
         response = await get_api_key()
+        api_key = response.get("data", {}).get("apiKey")
 
-        if not response or "data" not in response or "apiKey" not in response["data"]:
-            raise ValueError("Invalid API key response format or missing API key.")
+        if not api_key:
+            raise ValueError("API key missing in response")
 
-        api_key = response["data"]["apiKey"]
-        print("✅ Gemini API key loaded successfully.")
-
-        # Configure Gemini with Flash model
+        # Configure Gemini with the Flash model
         genai.configure(api_key=api_key)
         model = genai.GenerativeModel(model_name="gemini-1.5-flash-latest")
-        print("✅ Gemini Flash model configured successfully.")
-        
+        print("✅ Gemini model initialized successfully.")
+
     except Exception as e:
+        model = None
         print(f"❌ Error configuring Gemini: {e}")
 
 
-async def generate_gemini_response(prompt: str) -> str:
+async def generate_gemini_response(prompt: str) -> Dict[str, Any]:
     """
-    Generates content from Gemini API based on a prompt asynchronously.
-    Includes basic retry handling for rate limit errors.
+    Generates a response from Gemini API safely.
+    Returns a dict with success, message, and data.
     """
+    global model
+
     if model is None:
-        return "Error: Gemini model not initialized. Please ensure configure_gemini_model runs on startup."
-    
+        return {
+            "success": False,
+            "message": "Gemini model not initialized",
+            "data": None
+        }
+
     retries = 3
     for attempt in range(retries):
         try:
+            # Run the blocking Gemini call in a thread
             response = await asyncio.to_thread(model.generate_content, prompt)
-            return response.text
+            return {
+                "success": True,
+                "message": "Response generated successfully",
+                "data": response.text
+            }
         except Exception as e:
+            # Retry on rate-limit errors
             if "429" in str(e) and attempt < retries - 1:
                 wait_time = 2 ** attempt
                 print(f"⚠️ Rate limit hit. Retrying in {wait_time}s...")
                 await asyncio.sleep(wait_time)
                 continue
-            print(f"❌ Error during Gemini response generation: {e}")
-            return "Error: Could not generate content."
+            return {
+                "success": False,
+                "message": "Error during Gemini response generation",
+                "data": str(e)
+            }
