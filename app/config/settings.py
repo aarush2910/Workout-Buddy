@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     EMAIL_HOST_PASSWORD: str = Field(..., json_schema_extra={"env": "EMAIL_HOST_PASSWORD"})
     EMAIL_USE_TLS: bool = Field(True, json_schema_extra={"env": "EMAIL_USE_TLS"})
     FROM_EMAIL: str = Field(..., json_schema_extra={"env": "FROM_EMAIL"})
-    GROQ_API_KEY: str = Field(..., json_schema_extra={"env": "GROQ_API_KEY"})
+    GEMINI_API: str = Field(..., json_schema_extra={"env": "GEMINI_API"})
 
     model_config = {
         "env_file": ".env",
