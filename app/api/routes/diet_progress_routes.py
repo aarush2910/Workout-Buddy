@@ -146,7 +146,7 @@ ONLY return this JSON object. NOTHING else.
 """
 
     try:
-        ai_result = await run_in_threadpool(generate_gemini_response, prompt)
+        ai_result = await generate_gemini_response(prompt)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"AI request failed: {str(e)}")
 
