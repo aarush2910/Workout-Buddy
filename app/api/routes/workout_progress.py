@@ -128,16 +128,19 @@ Return only a valid JSON object in the following exact format:
 """
 
     try:
-        ai_result = await run_in_threadpool(generate_gemini_response, prompt)
+        ai_result = await generate_gemini_response(prompt)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"AI request failed: {str(e)}")
 
     def extract_json_from_response(text: str):
+     try:
         match = re.search(r"{.*}", text, re.DOTALL)
         if not match:
             raise ValueError("No JSON object found in AI output.")
         return json.loads(match.group())
-
+     except Exception as e:
+        print("❌ Raw AI output (debug):", text)
+        raise e
     try:
         data = extract_json_from_response(ai_result)
     except Exception as e:
