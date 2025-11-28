@@ -25,7 +25,6 @@ app.add_middleware(SessionMiddleware, secret_key=settings.SESSION_SECRET_KEY)
 # Include all routes from api_v1
 app.include_router(api_router, prefix="/api")
 
-
 # Health check
 @app.get("/")
 async def root():
