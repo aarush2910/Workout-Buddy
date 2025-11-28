@@ -10,11 +10,7 @@ from app.models.workout import WorkoutDietPlan
 from datetime import datetime, timezone , time , timedelta ,date
 from app.models.user_profile import UserProfileUpdate
 
-<<<<<<< HEAD
 from app.utils.groq import get_groq_response
-=======
-from app.utils.gemini import generate_gemini_response
->>>>>>> da34e5a4827dea65af3bbd0322733a46fb95511a
 
 
 router = APIRouter(dependencies=[Depends(get_current_user_id)])
@@ -79,30 +75,18 @@ async def create_weekly_workout_plan(
         await workout_collection.delete_many({"user_id": user_id})
 
 
-<<<<<<< HEAD
         raw_response = get_groq_response(build_workout_prompt(payload))
-=======
-        raw_response = await generate_gemini_response(build_workout_prompt(payload))
->>>>>>> da34e5a4827dea65af3bbd0322733a46fb95511a
         cleaned_response = re.sub(r"^```(?:json)?\n|\n```$", "", raw_response.strip())
 
         # 🔍 Check for empty or invalid response
         if not cleaned_response:
-<<<<<<< HEAD
             return api_response(message="Empty response from Groq model", status=502)
-=======
-            return api_response(message="Empty response from Gemini model", status=502)
->>>>>>> da34e5a4827dea65af3bbd0322733a46fb95511a
 
         try:
             plan_data = json.loads(cleaned_response)
         except json.JSONDecodeError as e:
             return api_response(
-<<<<<<< HEAD
                 message="Invalid JSON from Groq response",
-=======
-                message="Invalid JSON from Gemini response",
->>>>>>> da34e5a4827dea65af3bbd0322733a46fb95511a
                 status=400,
                 data={"raw_response": raw_response}
             )
