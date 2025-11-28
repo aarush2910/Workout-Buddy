@@ -1,18 +1,11 @@
-<<<<<<< HEAD
 import google.generativeai as genai  # type: ignore
 from app.api.routes.api_key import get_api_key
 
 # Global variable to store the configured Gemini model
-=======
-import os
-import google.generativeai as genai  # type: ignore
-
->>>>>>> da34e5a4827dea65af3bbd0322733a46fb95511a
 model = None
 
 async def configure_gemini_model():
     """
-<<<<<<< HEAD
     Configures the Gemini API and initializes the model.
     This function should be called once during application startup.
     """
@@ -48,36 +41,3 @@ async def generate_gemini_response(prompt: str) -> str:
     except Exception as e:
         print(f"❌ An error occurred during Gemini response generation: {e}")
         return "Error: Could not generate content."
-=======
-    Initializes Gemini Flash using API key from environment variable.
-    """
-    global model
-    api_key = os.getenv("GEMINI_API")  # <-- make sure this is set in your .env
-
-    if not api_key:
-        print("❌ GEMINI_API not found in environment variables!")
-        return
-
-    try:
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel(model_name="gemini-2.5-flash")
-        print("✅ Gemini Flash model initialized successfully")
-    except Exception as e:
-        print(f"❌ Error configuring Gemini: {e}")
-
-
-async def generate_gemini_response(prompt: str) -> str:
-    """
-    Generates content from Gemini asynchronously.
-    """
-    if model is None:
-        return "Error: Gemini model not initialized."
-
-    try:
-        # Run blocking call in a thread
-        import asyncio
-        response = await asyncio.to_thread(model.generate_content, prompt)
-        return response.text
-    except Exception as e:
-        return f"Error generating content: {e}"
->>>>>>> da34e5a4827dea65af3bbd0322733a46fb95511a
